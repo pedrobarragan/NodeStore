@@ -7,15 +7,18 @@ const { createProductSchema, updateProductSchema, getProductSchema } = require('
 const router = express.Router();
 const service = new ProductsService();
 
+//respuesta para get de /products
 router.get('/', async (req, res) => {
   const products = await service.find();
   res.json(products);
 });
 
+//respuesta para products/filter
 router.get('/filter', (req, res) => {
   res.send('Yo soy un filter');
 });
 
+//Respuesta para products/id
 router.get('/:id',
   validatorHandler(getProductSchema, 'params'),
   async (req, res, next) => {
@@ -29,8 +32,9 @@ router.get('/:id',
   }
 );
 
+//post de /products
 router.post('/',
-  validatorHandler(createProductSchema, 'body'),
+  validatorHandler(createProductSchema, 'body'), // el primer argumento es el esquema, el segundo es la propiedad, puede ser el body, un parámetro, etc
   async (req, res) => {
     const body = req.body;
     const newProduct = await service.create(body);
@@ -38,6 +42,7 @@ router.post('/',
   }
 );
 
+//Patch de /products/id -> Se valida que el id esté bien escrito y que el body tenga los datos de manera correcta
 router.patch('/:id',
   validatorHandler(getProductSchema, 'params'),
   validatorHandler(updateProductSchema, 'body'),

@@ -1,3 +1,6 @@
+//Estos son middlewares de tipo error, deben tener los 4 parámetros y se importan en el index.js principal
+//y se ejecutan en orden después del routing
+//Se deben llamar explicitamente en el catch simplemente colocando next(error)
 function logErrors (err, req, res, next) {
   console.log('logErrors');
   console.error(err);

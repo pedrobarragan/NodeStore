@@ -67,7 +67,7 @@ class ProductsService {
     if (index === -1) {
       throw boom.notFound('product not found');
     }
-    this.products.splice(index, 1);
+    this.products.splice(index, 1); //el primer argumento es el index del arreglo de productos a eliminar, el segundo argumento indica que solo se eliminará un elemento
     return { id };
   }
 
