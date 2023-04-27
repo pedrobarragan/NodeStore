@@ -1,6 +1,8 @@
 //Estos son middlewares de tipo error, deben tener los 4 parámetros y se importan en el index.js principal
 //y se ejecutan en orden después del routing
 //Se deben llamar explicitamente en el catch simplemente colocando next(error)
+const { ValidationError } = require('sequelize');
+
 function logErrors (err, req, res, next) {
   console.log('logErrors');
   console.error(err);
@@ -24,5 +26,16 @@ function boomErrorHandler(err, req, res, next) {
 
 }
 
+function ormErrorHandler(err, req, res, next) {
+  if (err instanceof ValidationError) {
+    res.status(409).json({
+      statusCode: 409,
+      message: err.name,
+      errors: err.errors
+    });
+  }
+  next(err);
+}
 
-module.exports = { logErrors, errorHandler, boomErrorHandler }
+
+module.exports = { logErrors, errorHandler, boomErrorHandler, ormErrorHandler }
